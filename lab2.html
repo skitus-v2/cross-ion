@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Планети Сонячної системи</title>
+  <link rel="stylesheet" href="https://unpkg.com/@ionic/core/css/ionic.bundle.css" />
+  <style>
+    /* Додаткові стилі для мобільної адаптивності */
+    ion-card {
+      --background: #f0f0f5;
+      --border-radius: 12px;
+      margin: 10px;
+    }
+    ion-img {
+      --border-radius: 12px 12px 0 0;
+    }
+    ion-card-title {
+      font-size: 1.4em;
+      font-weight: bold;
+      text-align: center;
+      color: #333;
+    }
+    ion-chip {
+      margin: 5px 0;
+    }
+    .planet-container {
+      padding: 10px;
+    }
+    ion-footer {
+      --background: #4a90e2;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <ion-app>
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title>Планети Сонячної системи</ion-title>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content>
+      <ion-grid>
+        <ion-row>
+          <!-- Меркурій -->
+          <ion-col size="12" size-md="6" size-lg="4">
+            <ion-card>
+              <ion-img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Mercury_in_true_color.jpg"></ion-img>
+              <ion-card-header>
+                <ion-card-title>Меркурій</ion-card-title>
+              </ion-card-header>
+              <ion-card-content>
+                Найменша планета Сонячної системи та найближча до Сонця.
+              </ion-card-content>
+              <ion-router-link href="/mercury" color="primary">
+                <ion-button expand="block" color="tertiary">Детальніше</ion-button>
+              </ion-router-link>
+            </ion-card>
+          </ion-col>
+
+          <!-- Венера -->
+          <ion-col size="12" size-md="6" size-lg="4">
+            <ion-card>
+              <ion-img src="https://upload.wikimedia.org/wikipedia/commons/e/e5/Venus-real_color.jpg"></ion-img>
+              <ion-card-header>
+                <ion-card-title>Венера</ion-card-title>
+              </ion-card-header>
+              <ion-card-content>
+                Друга планета від Сонця, відома своєю густою атмосферою.
+              </ion-card-content>
+              <ion-router-link href="/venus">
+                <ion-button expand="block" color="tertiary">Детальніше</ion-button>
+              </ion-router-link>
+            </ion-card>
+          </ion-col>
+          
+          <!-- Земля -->
+          <ion-col size="12" size-md="6" size-lg="4">
+            <ion-card>
+              <ion-img src="https://upload.wikimedia.org/wikipedia/commons/9/97/The_Earth_seen_from_Apollo_17.jpg"></ion-img>
+              <ion-card-header>
+                <ion-card-title>Земля</ion-card-title>
+              </ion-card-header>
+              <ion-card-content>
+                Наша рідна планета, єдина відома з життям.
+              </ion-card-content>
+              <ion-router-link href="/earth">
+                <ion-button expand="block" color="tertiary">Детальніше</ion-button>
+              </ion-router-link>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-content>
+
+    <ion-footer>
+      <ion-toolbar>
+        <ion-title>Сонячна система</ion-title>
+      </ion-toolbar>
+    </ion-footer>
+
+    <!-- Маршрутизація -->
+    <ion-router>
+      <ion-route url="/" component="page-home"></ion-route>
+      <ion-route url="/mercury" component="page-mercury"></ion-route>
+      <ion-route url="/venus" component="page-venus"></ion-route>
+      <ion-route url="/earth" component="page-earth"></ion-route>
+    </ion-router>
+    <ion-router-outlet></ion-router-outlet>
+  </ion-app>
+
+  <!-- Підключення скриптів Ionic -->
+  <script type="module" src="https://unpkg.com/@ionic/core/dist/ionic/ionic.esm.js"></script>
+  <script nomodule src="https://unpkg.com/@ionic/core/dist/ionic/ionic.js"></script>
+
+  <script>
+    // Визначення компонентів сторінок
+    class MercuryPage extends HTMLElement {
+      connectedCallback() {
+        this.innerHTML = `
+          <ion-header>
+            <ion-toolbar color="primary">
+              <ion-title>Меркурій</ion-title>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content class="planet-container">
+            <ion-img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Mercury_in_true_color.jpg"></ion-img>
+            <ion-chip>Температура: Вдень до 430°C, вночі до -180°C</ion-chip>
+            <ion-chip>Маса: 3.3011×10^23 кг</ion-chip>
+            <ion-chip>Відстань: 57.9 млн км від Сонця</ion-chip>
+            <ion-accordion>
+              <ion-item slot="header">Додаткова інформація</ion-item>
+              <ion-list slot="content">
+                <ion-item>Місії: Mariner 10, MESSENGER</ion-item>
+              </ion-list>
+            </ion-accordion>
+          </ion-content>
+        `;
+      }
+    }
+    customElements.define('page-mercury', MercuryPage);
+
+    class VenusPage extends HTMLElement {
+      connectedCallback() {
+        this.innerHTML = `
+          <ion-header>
+            <ion-toolbar color="primary">
+              <ion-title>Венера</ion-title>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content class="planet-container">
+            <ion-img src="https://upload.wikimedia.org/wikipedia/commons/e/e5/Venus-real_color.jpg"></ion-img>
+            <ion-chip>Температура: Середня близько 464°C</ion-chip>
+            <ion-chip>Маса: 4.8675×10^24 кг</ion-chip>
+            <ion-chip>Відстань: 108.2 млн км від Сонця</ion-chip>
+            <ion-accordion>
+              <ion-item slot="header">Додаткова інформація</ion-item>
+              <ion-list slot="content">
+                <ion-item>Місії: Venera, Magellan, Venus Express</ion-item>
+              </ion-list>
+            </ion-accordion>
+          </ion-content>
+        `;
+      }
+    }
+    customElements.define('page-venus', VenusPage);
+
+    class EarthPage extends HTMLElement {
+      connectedCallback() {
+        this.innerHTML = `
+          <ion-header>
+            <ion-toolbar color="primary">
+              <ion-title>Земля</ion-title>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content class="planet-container">
+            <ion-img src="https://upload.wikimedia.org/wikipedia/commons/9/97/The_Earth_seen_from_Apollo_17.jpg"></ion-img>
+            <ion-chip>Температура: Середня близько 15°C</ion-chip>
+            <ion-chip>Маса: 5.97237×10^24 кг</ion-chip>
+            <ion-chip>Відстань: 149.6 млн км від Сонця</ion-chip>
+            <ion-accordion>
+              <ion-item slot="header">Додаткова інформація</ion-item>
+              <ion-list slot="content">
+                <ion-item>Місії: Apollo, МКС</ion-item>
+              </ion-list>
+            </ion-accordion>
+          </ion-content>
+        `;
+      }
+    }
+    customElements.define('page-earth', EarthPage);
+  </script>
+</body>
+</html>
