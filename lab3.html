@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planets App</title>
+    
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
+    <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css" rel="stylesheet">
+
+    <style>
+      ion-content {
+        --background: #f0f0f0;
+      }
+    </style>
+</head>
+<body>
+
+<ion-app>
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Planets</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <ion-list id="planet-list">
+      <!-- Здесь будет динамически добавляться список планет -->
+    </ion-list>
+
+    <!-- Плавающая кнопка для добавления планеты -->
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button id="add-planet-modal-btn">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+    
+    <!-- Модальное окно для добавления новой планеты -->
+    <ion-modal id="add-planet-modal" trigger="add-planet-modal-btn">
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Add New Planet</ion-title>
+          <ion-buttons slot="end">
+            <ion-button id="close-modal-btn">Close</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-list>
+          <ion-item>
+            <ion-label position="stacked">Planet Name</ion-label>
+            <ion-input id="planet-name" required></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Image URL</ion-label>
+            <ion-input id="planet-image" required></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Description</ion-label>
+            <ion-textarea id="planet-description" required></ion-textarea>
+          </ion-item>
+        </ion-list>
+        <ion-button expand="block" id="add-planet-btn">Add Planet</ion-button>
+      </ion-content>
+    </ion-modal>
+  </ion-content>
+</ion-app>
+
+<script>
+  // Загружаем планеты из localStorage или используем пустой массив
+  const loadPlanets = () => {
+    return JSON.parse(localStorage.getItem('planets')) || [];
+  };
+
+  // Сохраняем планеты в localStorage
+  const savePlanets = (planets) => {
+    localStorage.setItem('planets', JSON.stringify(planets));
+  };
+
+  // Обновляем список планет на главной странице
+  const updatePlanetList = () => {
+    const planetList = document.getElementById('planet-list');
+    const planets = loadPlanets();
+    planetList.innerHTML = planets.map(planet => `
+      <ion-item>
+        <ion-thumbnail slot="start">
+          <ion-img src="${planet.image}"></ion-img>
+        </ion-thumbnail>
+        <ion-label>
+          <h2>${planet.name}</h2>
+          <p>${planet.description}</p>
+        </ion-label>
+      </ion-item>
+    `).join('');
+  };
+
+  // Добавление новой планеты
+  const addPlanet = () => {
+    const planetName = document.getElementById('planet-name').value.trim();
+    const planetImage = document.getElementById('planet-image').value.trim();
+    const planetDescription = document.getElementById('planet-description').value.trim();
+
+    if (!planetName || !planetImage || !planetDescription) {
+      alert('Please fill all fields');
+      return;
+    }
+
+    const newPlanet = {
+      name: planetName,
+      image: planetImage,
+      description: planetDescription,
+    };
+
+    const planets = loadPlanets();
+    planets.push(newPlanet);
+    savePlanets(planets);
+    updatePlanetList();
+
+    // Закрываем модальное окно
+    const modal = document.getElementById('add-planet-modal');
+    modal.dismiss();
+
+    // Очищаем поля формы
+    document.getElementById('planet-name').value = '';
+    document.getElementById('planet-image').value = '';
+    document.getElementById('planet-description').value = '';
+  };
+
+  // Инициализация приложения
+  document.addEventListener('DOMContentLoaded', () => {
+    updatePlanetList();
+
+    // Обработчик для добавления планеты
+    document.getElementById('add-planet-btn').addEventListener('click', addPlanet);
+
+    // Обработчик для закрытия модального окна
+    document.getElementById('close-modal-btn').addEventListener('click', () => {
+      const modal = document.getElementById('add-planet-modal');
+      modal.dismiss();
+    });
+  });
+</script>
+
+</body>
+</html>
