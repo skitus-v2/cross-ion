@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Planets Info</title>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core@latest/dist/ionic/ionic.esm.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core@latest/css/ionic.bundle.css" />
+</head>
+<body>
+  <ion-app>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Планети Сонячної системи</ion-title>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content>
+      <ion-grid>
+        <ion-row id="planets-container">
+        </ion-row>
+      </ion-grid>
+      <ion-loading id="loading-spinner" message="Завантаження..." duration="0"></ion-loading>
+    </ion-content>
+  </ion-app>
+
+  <script>
+    class HomePage {
+      constructor() {
+        this.planets = [];
+      }
+
+
+      async fetchPlanetsData() {
+        const loader = document.querySelector('#loading-spinner');
+        loader.present();
+
+        const url = 'https://planets-info-by-newbapi.p.rapidapi.com/api/v1/planets/';
+        const options = {
+          method: 'GET',
+          headers: {
+            'x-rapidapi-key': 'x-xtw-4cd671da-f168-429a-b22f-94d4eee067e8',
+            'x-rapidapi-host': 'planets-info-by-newbapi.p.rapidapi.com'
+          }
+        };
+
+        try {
+          const response = await fetch(url, options);
+          const data = await response.json();
+          this.planets = data.map((planet) => {
+            return {
+              name: planet.name,
+              image: planet.imgSrc.img,
+              description: planet.description,
+            };
+          });
+          this.render();
+        } catch (error) {
+          console.error('Помилка при отриманні даних про планети:', error);
+        } finally {
+          loader.dismiss();
+        }
+      }
+
+      render() {
+        const container = document.getElementById('planets-container');
+        container.innerHTML = this.planets
+          .map(
+            (planet) => `
+            <ion-col size="12" size-sm="6" size-md="4">
+              <ion-card class="planet-card">
+                <ion-img src="${planet.image}"></ion-img>
+                <ion-card-header>
+                  <ion-card-title>${planet.name}</ion-card-title>
+                </ion-card-header>
+                <ion-card-content>
+                  <p>${planet.description}</p>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>`
+          )
+          .join('');
+      }
+
+      async connectedCallback() {
+        await this.fetchPlanetsData();
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const homePage = new HomePage();
+      homePage.connectedCallback();
+    });
+  </script>
+</body>
+</html>
