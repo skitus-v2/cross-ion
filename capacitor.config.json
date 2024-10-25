@@ -1,0 +1,10 @@
+{
+  "appId": "com.example.app",
+  "appName": "cross-platform",
+  "webDir": "www",
+  "plugins": {
+    "CapacitorHttp": {
+      "enabled": true
+    }
+  }  
+}
